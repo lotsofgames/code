@@ -28,6 +28,7 @@ const mapping1 = {
     " ": 27,
     ".": 28,
     ",": 29,
+    "\'": 30
 };
 
 const mapping2 = {
@@ -59,19 +60,31 @@ const mapping2 = {
     26: "z",
     27: " ",
     28: ".",
-    29: ","
+    29: ",",
+    30: "\'"
 };
 
 let message = "";
 let code = "";
 let x = "";
 //const program = prompt("Encode or Decode (e or d)? ");
-const recipient = prompt("Recipient: ");
+let recipient = ""
 let shiftconstant = 1;
 messagebutton = document.getElementById("submitmessage")
 codebutton = document.getElementById("submitcode")
 
+function getshiftconstant() {
+    recipient = document.getElementById("recipienttext").value;
+    for (let i = 0; i < recipient.length; i++) {
+        x *= mapping1[recipient[i]];
+    }
+    x = parseInt(x.toString(2));
+    x = x.toString(16);
+    return x;
+}
+
 function encode() {
+    shiftconstant = getshiftconstant();
     //message = prompt("Message: ");
     message = document.getElementById("messagetext").value;
     for (let i = 0; i < message.length; i++) {
@@ -89,6 +102,7 @@ function encode() {
 }
 
 function decode() {
+    shiftconstant = getshiftconstant();
     //code = prompt("Code: ");
     code = document.getElementById("codetext").value;
     if (code.slice(0, shiftconstant.length) === shiftconstant) {
@@ -110,12 +124,6 @@ function decode() {
         document.getElementById("output").value = "Locked";
     }
 }
-
-for (let i = 0; i < recipient.length; i++) {
-    shiftconstant *= mapping1[recipient[i]];
-}
-shiftconstant = parseInt(shiftconstant.toString(2));
-shiftconstant = shiftconstant.toString(16);
 
 /*
 if (program === "e") {
